@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+
+  /* Sidebar */
+  --color-sidebar: #2C3E5A;        /* fondo del sidebar */
+  --color-sidebar-active: #1E3250; /* fondo del link activo (ruta actual) */
+  --color-sidebar-text: #A8BCCF;   /* texto de los links */
+  --color-sidebar-muted: #6B85A8;  /* texto de las secciones PRINCIPAL, GESTIÓN */
+
+  /* Botones y acciones principales */
+  --color-primary: #2563EB;        /* botón primario, links de acción */
+  --color-primary-hover: #1D4ED8;  /* botón primario al hacer hover */
+  --color-primary-light: #EEF3FF;  /* fondo suave para badges o highlights azules */
+
+  /* Fondo y bordes */
+  --color-page: #F4F6FA;           /* fondo general de la página */
+  --color-surface: #FFFFFF;        /* fondo de cards, modales, dropdowns */
+  --color-border-base: #E4EAF2;    /* bordes de cards, tablas, inputs */
+
+  /* Botones secundarios */
+  --color-secondary: #F1F5F9;      /* botón secundario, cancelar, exportar */
+  --color-secondary-hover: #E2E8F0; /* botón secundario al hacer hover */
+
+  /* Textos */
+  --color-title: #1A2840;          /* títulos principales */
+  --color-subtitle: #6B7FA8;       /* subtítulos o labels secundarios */
+  --color-muted: #9AAAC4;          /* texto deshabilitado o de menor importancia */
+
+  /* Estados — éxito, advertencia, error */
+  --color-success: #0C9E5A;        /* texto o icono de éxito */
+  --color-success-light: #EDFAF3;  /* fondo de badge/alerta de éxito */
+  --color-warning: #B45309;        /* texto o icono de advertencia */
+  --color-warning-light: #FFFBEB;  /* fondo de badge/alerta de advertencia */
+  --color-danger: #DC2626;         /* texto o icono de error/eliminar */
+  --color-danger-light: #FEF2F2;   /* fondo de badge/alerta de error */
+}
