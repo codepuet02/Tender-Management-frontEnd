@@ -19,13 +19,13 @@ function MainLayout() {
       <div>
         <Sidebar />
       </div>
-      <div className="border border-black flex-1">
+      <div className="border border-black flex-1 ">
         <header className="h-16 bg-white flex items-center px-4">
           <h1 className="text-2xl font-semibold text-title">
             {titleMap[pathname]}
           </h1>
         </header>
-        <Outlet />
+        <Outlet className="p-4 border border-black" />
       </div>
     </div>
   );
