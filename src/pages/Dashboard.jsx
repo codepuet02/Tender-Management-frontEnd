@@ -1,5 +1,5 @@
 import Table from "../components/Table";
-import DashboardCard from "../components/Dashboard-card";
+import DashboardCard from "../components/DashboardCard";
 
 function Dashboard() {
   const GeneralInfo = [
@@ -55,7 +55,7 @@ function Dashboard() {
       </div>
 
       <div className=" h-96 w-full mt-6">
-        <Table tenders={tenders} />
+        <Table tenders={tenders} Colums={Colums} />
       </div>
     </div>
   );

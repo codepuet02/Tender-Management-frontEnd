@@ -1,4 +1,9 @@
-function Table({ tenders }) {
+// Componente de tabla reutilizable para mostrar licitaciones
+// Props:
+//   tenders: array de licitaciones a mostrar
+//   Colums: array de columnas con { header: string, key: string }
+function Table({ tenders, Colums }) {
+  // Estilos de color según el estado de la licitación
   const colorStatus = [
     { status: "Proceso", style: "bg-warning-light text-warning" },
     { status: "Listo", style: "bg-success-light text-success" },
@@ -7,6 +12,7 @@ function Table({ tenders }) {
 
   return (
     <div className="bg-surface rounded-xl shadow-md overflow-hidden">
+      {/* Encabezado de la tarjeta */}
       <div className="px-4 py-3 border-b border-border-base flex justify-between">
         <h1 className="text-lg font-semibold text-title">
           Licitaciones Recientes
@@ -15,18 +21,22 @@ function Table({ tenders }) {
           Ver Todas
         </button>
       </div>
+
       <table className="w-full text-sm">
+        {/* Encabezados de columna dinámicos */}
         <thead className="bg-secondary text-subtitle uppercase text-xs">
           <tr>
-            <th className="px-4 py-3 text-left">Numero</th>
-            <th className="px-4 py-3 text-left">Cliente</th>
-            <th className="px-4 py-3 text-left">Objeto contractual</th>
-            <th className="px-4 py-3 text-left">Vencimiento</th>
-            <th className="px-4 py-3 text-left">Estado</th>
+            {Colums.map((c) => (
+              <th key={c.key} className="px-4 py-3 text-left">
+                {c.header}
+              </th>
+            ))}
           </tr>
         </thead>
+        {/* Filas de licitaciones */}
         <tbody className="divide-y divide-border-base text-title">
           {tenders.map((row) => {
+            // Busca el estilo de color según el estado de la fila
             let style = colorStatus.find((c) => c.status == row.estado);
 
             return (
@@ -36,6 +46,7 @@ function Table({ tenders }) {
                 <td className="px-4 py-3">{row.objeto}</td>
                 <td className="px-4 py-3">{row.fechaCierre}</td>
                 <td className="px-4 py-3">
+                  {/* Badge de estado con color dinámico */}
                   <span
                     className={`${style.style} text-xs font-medium px-4 py-1 rounded-full`}
                   >
