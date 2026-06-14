@@ -17,7 +17,7 @@
   /* Fondo y bordes */
   --color-page: #F4F6FA;           /* fondo general de la página */
   --color-surface: #FFFFFF;        /* fondo de cards, modales, dropdowns */
-  --color-border-base: #E4EAF2;    /* bordes de cards, tablas, inputs */
+  --color-border-base: #D1D5DB;    /* bordes de cards, tablas, inputs */
 
   /* Botones secundarios */
   --color-secondary: #F1F5F9;      /* botón secundario, cancelar, exportar */

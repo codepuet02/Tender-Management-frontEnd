@@ -6,6 +6,7 @@ import Clients from "./pages/Clients";
 import Providers from "./pages/Providers";
 import Catalog from "./pages/Catalog";
 import Products from "./pages/Products";
+import TenderDetail from "./pages/TenderDetail";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/providers" element={<Providers />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/products" element={<Products />} />
+          <Route path="tenders/:id" element={<TenderDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>

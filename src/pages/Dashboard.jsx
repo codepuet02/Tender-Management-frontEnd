@@ -1,7 +1,20 @@
 import Table from "../components/Table";
 import DashboardCard from "../components/DashboardCard";
+import PageHeader from "../components/PageHeader";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
+
+  function RedirectTenders() {
+    navigate("/tenders");
+  }
+
+  const infoHeader = {
+    title: "Bienvenido,Andres",
+    subtitle: "Resumen General - Junio de 2026",
+    btnLabel: " + Nueva Licitacion",
+  };
   const GeneralInfo = [
     { value: 12, label: "Licitaciones Activas", icon: "FileText" },
     { value: 34, label: "Productos Totales", icon: "Package" },
@@ -10,11 +23,11 @@ function Dashboard() {
   ];
 
   const Colums = [
-    { header: "Numero", key: "number" },
-    { header: "Cliente", key: "client" },
-    { header: "Objeto contractual", key: "object" },
-    { header: "Vencimiento", key: "expiration" },
-    { header: "Estado", key: "status" },
+    { header: "Numero", key: "codigo" },
+    { header: "Cliente", key: "empresa" },
+    { header: "Objeto contractual", key: "objeto" },
+    { header: "Vencimiento", key: "fechaCierre" },
+    { header: "Estado", key: "estado" },
   ];
 
   const tenders = [
@@ -43,19 +56,28 @@ function Dashboard() {
 
   return (
     <div className="px-4 py-6">
-      <div className="div">
-        <h1 className="text-3xl font-bold text-title">Bienvenido, Andres</h1>
-        <p className="text-sm text-subtitle">Resumen General - Junio de 2026</p>
-      </div>
-
+      {/*seccion donnde mostramos el usuario logueado*/}
+      <PageHeader
+        title={infoHeader.title}
+        subtitle={infoHeader.subtitle}
+        btnLabel={infoHeader.btnLabel}
+      />
+      {/*seccion donde usamos el componente dashboardcard para renderizar las cards con sus respectivos datos*/}
       <div className="h-32 flex justify-between gap-4 mt-6">
         {GeneralInfo.map((card, index) => (
           <DashboardCard key={index} card={card} />
         ))}
       </div>
-
+      {/*usamos el componente Table para renderizar la respectiva tabla*/}
       <div className=" h-96 w-full mt-6">
-        <Table tenders={tenders} Colums={Colums} />
+        <Table
+          tenders={tenders}
+          Colums={Colums}
+          btnHeader={true}
+          onRowClick={false}
+          header={true}
+          redirecTender={RedirectTenders}
+        />
       </div>
     </div>
   );

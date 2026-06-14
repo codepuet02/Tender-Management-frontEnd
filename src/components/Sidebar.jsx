@@ -10,7 +10,7 @@ import {
 
 function Sidebar() {
   return (
-    <div className="w-60 bg-sidebar h-screen flex flex-col p-4 ">
+    <div className="w-60 bg-sidebar h-screen flex flex-col p-4 sticky top-0 ">
       {/*Logo */}
       <div className="flex flex-col border border-white/20 p-4 rounded">
         <h1 className="text-2xl font-semibold text-white ">Jialicita</h1>
