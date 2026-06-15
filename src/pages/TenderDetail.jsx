@@ -11,9 +11,9 @@ function TenderDetail() {
     { header: "Producto", key: "producto" },
     { header: "Proveedor", key: "proveedor" },
     { header: "Cantidad", key: "cantidad" },
-    { header: "P. Compra", key: "precioCompra" },
-    { header: "P. Venta", key: "precioVenta" },
-    { header: "Ganancia", key: "ganancia" },
+    { header: "P. Compra", key: "precioCompra", type: "currency" },
+    { header: "P. Venta", key: "precioVenta", type: "currency" },
+    { header: "Ganancia", key: "ganancia", type: "currency" },
   ];
   const marketStudyItems = [
     {

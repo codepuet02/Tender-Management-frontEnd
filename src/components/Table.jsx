@@ -1,3 +1,5 @@
+import formattersCop from "../utils/formattersCop";
+
 // Componente de tabla reutilizable para mostrar licitaciones
 // Props:
 //   tenders: array de licitaciones a mostrar
@@ -53,8 +55,6 @@ function Table({
         {/* Filas de licitaciones */}
         <tbody className="divide-y divide-border-base text-title ">
           {tenders.map((row) => {
-            // Busca el estilo de color según el estado de la fila
-
             return (
               <tr
                 key={row.codigo}
@@ -75,6 +75,8 @@ function Table({
                         >
                           {row[c.key]}
                         </span>
+                      ) : c.hasOwnProperty("type") ? (
+                        formattersCop(row[c.key])
                       ) : (
                         row[c.key]
                       )}
