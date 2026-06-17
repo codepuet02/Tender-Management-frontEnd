@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
-import Dashboard from "./pages/Dashboard";
-import Tenders from "./pages/Tenders";
-import Clients from "./pages/Clients";
-import Providers from "./pages/Providers";
-import Catalog from "./pages/Catalog";
-import Products from "./pages/Products";
-import TenderDetail from "./pages/TenderDetail";
+import Dashboard from "./pages/dashboard/index";
+import Tenders from "./pages/Tenders/index";
+import Clients from "./pages/Clients/index";
+import Providers from "./pages/Providers/index";
+import Catalog from "./pages/Catalog/index";
+import Products from "./pages/Products/index";
+import TenderDetail from "./pages/Tenders/TenderDetail";
 
 function App() {
   return (

@@ -1,7 +1,8 @@
-import Table from "../components/Table";
-import DashboardCard from "../components/DashboardCard";
-import PageHeader from "../components/PageHeader";
+import Table from "../../components/common/Table";
+import DashboardCard from "../../components/dashboard/DashboardCard";
+import PageHeader from "../../components/common/PageHeader";
 import { useNavigate } from "react-router-dom";
+import { tenders } from "../../data/tenders";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -28,30 +29,6 @@ function Dashboard() {
     { header: "Objeto contractual", key: "objeto" },
     { header: "Vencimiento", key: "fechaCierre" },
     { header: "Estado", key: "estado" },
-  ];
-
-  const tenders = [
-    {
-      codigo: "LIC-2026-001",
-      empresa: "Ecopetrol S.A.",
-      objeto: "Suministro de equipos industriales",
-      fechaCierre: "2023-12-31",
-      estado: "Proceso",
-    },
-    {
-      codigo: "LIC-2026-002",
-      empresa: "Alcaldía de Bogotá",
-      objeto: "Mantenimiento de infraestructura vial",
-      fechaCierre: "2024-01-15",
-      estado: "Listo",
-    },
-    {
-      codigo: "LIC-2026-003",
-      empresa: "Ministerio de Educación",
-      objeto: "Dotación de equipos tecnológicos",
-      fechaCierre: "2024-02-10",
-      estado: "Pendiente",
-    },
   ];
 
   return (

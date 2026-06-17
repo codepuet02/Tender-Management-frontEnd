@@ -1,6 +1,7 @@
 import { MoveLeft } from "lucide-react";
-import Table from "../components/Table";
+import Table from "../../components/common/Table";
 import { useNavigate } from "react-router-dom";
+import formatCOP from "../../utils/formatters";
 
 function TenderDetail() {
   const navigate = useNavigate();
@@ -44,6 +45,13 @@ function TenderDetail() {
       ganancia: 1800000,
     },
   ];
+
+  const subtotal = marketStudyItems.reduce(
+    (sum, item) => sum + item.precioVenta * item.cantidad,
+    0,
+  );
+  const iva = subtotal * 0.19;
+  const total = subtotal + iva;
 
   return (
     <div className="px-4 py-6 flex flex-col ">
@@ -123,12 +131,12 @@ function TenderDetail() {
       </div>
       {/* creacion de licitaciones etc */}
       <div className="flex flex-col mt-4">
-        <div className="flex gap-4 min-h-100">
+        <div className="flex gap-4 min-h-100 ">
           <div className="flex flex-col items-center">
             <div className=" w-3 h-3 rounded-full bg-primary"></div>
             <div className="w-1 flex-1 bg-primary"></div>
           </div>
-          <div className="border border-border-base  rounded-lg w-full bg-white">
+          <div className="border border-border-base  rounded-lg w-full bg-white flex flex-col">
             <div className="flex justify-between items-center border-b border-gray-300 px-4 py-3">
               <h2 className="text-base font-semibold">Estudio de Mercado</h2>
               <div className="flex gap-4 ">
@@ -140,9 +148,44 @@ function TenderDetail() {
                 </button>
               </div>
             </div>
-            {/*tabla*/}
+            {/*tabla y resumen*/}
+            <div className=" flex flex-1 px-4 py-4 gap-4">
+              <div className="flex-4 ">
+                <Table tenders={marketStudyItems} Colums={marketStudyColumns} />
+              </div>
 
-            <Table tenders={marketStudyItems} Colums={marketStudyColumns} />
+              <div className="border border-border-base flex-1 px-4 py-4 ">
+                <h2 className="text-base font-semibold mb-3">Resumen</h2>
+
+                <div className="flex justify-between text-sm py-1">
+                  <span className="text-subtitle">Items</span>
+                  <span className="text-title font-medium">
+                    {marketStudyItems.length}
+                  </span>
+                </div>
+
+                <div className="flex justify-between text-sm py-1">
+                  <span className="text-subtitle">Subtotal</span>
+                  <span className="text-title font-medium">
+                    {formatCOP(subtotal)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between text-sm py-1">
+                  <span className="text-subtitle">IVA (19%)</span>
+                  <span className="text-title font-medium">
+                    {formatCOP(iva)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
+                  <span className="font-semibold text-title">Total</span>
+                  <span className="font-bold text-primary">
+                    {formatCOP(total)}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

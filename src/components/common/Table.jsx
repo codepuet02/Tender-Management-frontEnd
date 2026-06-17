@@ -1,4 +1,4 @@
-import formattersCop from "../utils/formattersCop";
+import formatCOP from "../../utils/formatters";
 
 // Componente de tabla reutilizable para mostrar licitaciones
 // Props:
@@ -76,7 +76,7 @@ function Table({
                           {row[c.key]}
                         </span>
                       ) : c.hasOwnProperty("type") ? (
-                        formattersCop(row[c.key])
+                        formatCOP(row[c.key])
                       ) : (
                         row[c.key]
                       )}
