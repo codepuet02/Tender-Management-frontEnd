@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MoveLeft } from "lucide-react";
 import Table from "../../components/common/Table";
 import { useNavigate } from "react-router-dom";
@@ -5,9 +6,10 @@ import formatCOP from "../../utils/formatters";
 
 function TenderDetail() {
   const navigate = useNavigate();
-  function previusPage() {
-    navigate(-1);
-  }
+
+  // pestaña activa: "estudio" o "propuesta"
+  const [activeTab, setActiveTab] = useState("estudio");
+
   const marketStudyColumns = [
     { header: "Producto", key: "producto" },
     { header: "Proveedor", key: "proveedor" },
@@ -16,6 +18,7 @@ function TenderDetail() {
     { header: "P. Venta", key: "precioVenta", type: "currency" },
     { header: "Ganancia", key: "ganancia", type: "currency" },
   ];
+
   const marketStudyItems = [
     {
       id: 1,
@@ -44,6 +47,33 @@ function TenderDetail() {
       precioVenta: 5100000,
       ganancia: 1800000,
     },
+    {
+      id: 3,
+      producto: "UPS 3000 VA",
+      proveedor: "Equipos Industriales S.A.",
+      cantidad: 2,
+      precioCompra: 4200000,
+      precioVenta: 5100000,
+      ganancia: 1800000,
+    },
+    {
+      id: 3,
+      producto: "UPS 3000 VA",
+      proveedor: "Equipos Industriales S.A.",
+      cantidad: 2,
+      precioCompra: 4200000,
+      precioVenta: 5100000,
+      ganancia: 1800000,
+    },
+    {
+      id: 3,
+      producto: "UPS 3000 VA",
+      proveedor: "Equipos Industriales S.A.",
+      cantidad: 2,
+      precioCompra: 4200000,
+      precioVenta: 5100000,
+      ganancia: 1800000,
+    },
   ];
 
   const subtotal = marketStudyItems.reduce(
@@ -53,28 +83,63 @@ function TenderDetail() {
   const iva = subtotal * 0.19;
   const total = subtotal + iva;
 
+  // estilos reutilizables para las pestañas
+  const tabStyle = (tab) =>
+    `px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
+      activeTab === tab
+        ? "border-primary text-primary"
+        : "border-transparent text-subtitle hover:text-title"
+    }`;
+
+  // contenido de tabla + resumen, igual para ambas pestañas por ahora
+  const tabContent = (
+    <div className="flex flex-1 px-4 py-4 gap-4">
+      <div className="flex-4 overflow-x-auto">
+        <Table tenders={marketStudyItems} Colums={marketStudyColumns} />
+      </div>
+      <div className="border border-border-base flex-1 px-4 py-4">
+        <h2 className="text-base font-semibold mb-3">Resumen</h2>
+        <div className="flex justify-between text-sm py-1">
+          <span className="text-subtitle">Items</span>
+          <span className="text-title font-medium">
+            {marketStudyItems.length}
+          </span>
+        </div>
+        <div className="flex justify-between text-sm py-1">
+          <span className="text-subtitle">Subtotal</span>
+          <span className="text-title font-medium">{formatCOP(subtotal)}</span>
+        </div>
+        <div className="flex justify-between text-sm py-1">
+          <span className="text-subtitle">IVA (19%)</span>
+          <span className="text-title font-medium">{formatCOP(iva)}</span>
+        </div>
+        <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
+          <span className="font-semibold text-title">Total</span>
+          <span className="font-bold text-primary">{formatCOP(total)}</span>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="px-4 py-6 flex flex-col ">
-      {/* header informacion */}
-      <div className="flex justify-between items-center ">
+    <div className="px-4 py-6 flex flex-col">
+      {/* header: botón atrás + título + acciones */}
+      <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <div className="div">
-            <button
-              onClick={previusPage}
-              className="bg-white border border-border-base rounded-md px-4 py-1 text-sm text-title hover:bg-gray-100 cursor-pointer font-semibold flex items-center gap-2"
-            >
-              <MoveLeft size={17} />
-              Atras
-            </button>
-          </div>
-          <div className="">
-            <h1 className="font-bold text-3xl ">LIC-2026-001</h1>
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-white border border-border-base rounded-md px-4 py-1 text-sm text-title hover:bg-gray-100 cursor-pointer font-semibold flex items-center gap-2"
+          >
+            <MoveLeft size={17} />
+            Atras
+          </button>
+          <div>
+            <h1 className="font-bold text-3xl">LIC-2026-001</h1>
             <p className="text-subtitle text-sm">
               Ecopetrol S.A - Contrato CONT-001-2026
             </p>
           </div>
         </div>
-
         <div className="flex gap-4">
           <button className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer">
             Editar
@@ -85,19 +150,18 @@ function TenderDetail() {
         </div>
       </div>
 
-      {/* informacion */}
-
+      {/* información de la licitación */}
       <div className="flex bg-white mt-4 px-4 py-4 rounded-lg border border-border-base">
         <div className="flex flex-3 flex-col gap-2">
           <h2 className="font-semibold text-lg">Informacion de Licitacion</h2>
           <div className="flex justify-between">
-            <div className="div">
+            <div>
               <p className="text-subtitle font-medium text-sm">Numero</p>
               <p className="font-medium text-title text-sm">LIC-2026-001</p>
             </div>
             <div>
               <p className="text-subtitle font-medium text-sm">Cliente</p>
-              <p className="font-medium text-title text-sm">Ecopetro S.A</p>
+              <p className="font-medium text-title text-sm">Ecopetrol S.A</p>
             </div>
             <div>
               <p className="text-subtitle font-medium text-sm">
@@ -112,8 +176,7 @@ function TenderDetail() {
               </p>
             </div>
           </div>
-
-          <div className="div">
+          <div>
             <h2 className="text-subtitle font-medium text-sm">
               Objeto Contractual
             </h2>
@@ -124,88 +187,51 @@ function TenderDetail() {
             </p>
           </div>
         </div>
-
         <div className="flex-1 flex justify-end">
           <p className="text-title text-sm">Proceso</p>
         </div>
       </div>
-      {/* creacion de licitaciones etc */}
-      <div className="flex flex-col mt-4">
-        <div className="flex gap-4 min-h-100 ">
-          <div className="flex flex-col items-center">
-            <div className=" w-3 h-3 rounded-full bg-primary"></div>
-            <div className="w-1 flex-1 bg-primary"></div>
+
+      {/* contenedor de pestañas */}
+      <div className="mt-4 border border-border-base rounded-lg bg-white flex flex-col">
+        {/* pestañas + botones de acción en la misma barra */}
+        <div className="flex justify-between items-center border-b border-border-base px-4">
+          <div className="flex">
+            <button
+              className={tabStyle("estudio")}
+              onClick={() => setActiveTab("estudio")}
+            >
+              Estudio de Mercado
+            </button>
+            <button
+              className={tabStyle("propuesta")}
+              onClick={() => setActiveTab("propuesta")}
+            >
+              Propuesta
+            </button>
           </div>
-          <div className="border border-border-base  rounded-lg w-full bg-white flex flex-col">
-            <div className="flex justify-between items-center border-b border-gray-300 px-4 py-3">
-              <h2 className="text-base font-semibold">Estudio de Mercado</h2>
-              <div className="flex gap-4 ">
-                <button className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title ">
-                  Editar
-                </button>
-                <button className="px-4 py-1 border border-success bg-success-light text-success rounded-md text-sm hover:bg-green-100 cursor-pointer">
-                  Descargar PDF
-                </button>
-              </div>
-            </div>
-            {/*tabla y resumen*/}
-            <div className=" flex flex-1 px-4 py-4 gap-4">
-              <div className="flex-4 ">
-                <Table tenders={marketStudyItems} Colums={marketStudyColumns} />
-              </div>
-
-              <div className="border border-border-base flex-1 px-4 py-4 ">
-                <h2 className="text-base font-semibold mb-3">Resumen</h2>
-
-                <div className="flex justify-between text-sm py-1">
-                  <span className="text-subtitle">Items</span>
-                  <span className="text-title font-medium">
-                    {marketStudyItems.length}
-                  </span>
-                </div>
-
-                <div className="flex justify-between text-sm py-1">
-                  <span className="text-subtitle">Subtotal</span>
-                  <span className="text-title font-medium">
-                    {formatCOP(subtotal)}
-                  </span>
-                </div>
-
-                <div className="flex justify-between text-sm py-1">
-                  <span className="text-subtitle">IVA (19%)</span>
-                  <span className="text-title font-medium">
-                    {formatCOP(iva)}
-                  </span>
-                </div>
-
-                <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
-                  <span className="font-semibold text-title">Total</span>
-                  <span className="font-bold text-primary">
-                    {formatCOP(total)}
-                  </span>
-                </div>
-              </div>
-            </div>
+          <div className="flex gap-4">
+            <button className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title">
+              Editar
+            </button>
+            <button className="px-4 py-1 border border-success bg-success-light text-success rounded-md text-sm hover:bg-green-100 cursor-pointer">
+              Descargar PDF
+            </button>
           </div>
         </div>
 
-        {/* seccion 2 */}
+        {/* contenido de la pestaña activa */}
+        {tabContent}
+      </div>
 
-        <div className="flex gap-4 min-h-90 ">
-          <div className="flex flex-col items-center">
-            <div className=" w-3 h-3 rounded-full bg-primary"></div>
-            <div className="w-1 flex-1 bg-primary"></div>
-          </div>
-          <div className="div">seccion 2</div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="flex flex-col items-center">
-            <div className=" w-3 h-3 rounded-full bg-primary"></div>
-            <div className="w-1 flex-1 bg-primary"></div>
-          </div>
-          <div className="div">seccion 3</div>
-        </div>
+      {/* botones de documentos — fuera del contenedor de pestañas */}
+      <div className="flex gap-4 mt-4 justify-end">
+        <button className="border border-border-base px-4 py-2 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title font-medium">
+          Generar Remisión
+        </button>
+        <button className="border border-border-base px-4 py-2 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title font-medium">
+          Generar Factura
+        </button>
       </div>
     </div>
   );

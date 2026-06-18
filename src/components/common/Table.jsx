@@ -1,4 +1,5 @@
 import formatCOP from "../../utils/formatters";
+import Badge from "./Badge";
 
 // Componente de tabla reutilizable para mostrar licitaciones
 // Props:
@@ -13,13 +14,6 @@ function Table({
   header,
   redirecTender,
 }) {
-  // Estilos de color según el estado de la licitación
-  const colorStatus = [
-    { status: "Proceso", style: "bg-warning-light text-warning" },
-    { status: "Listo", style: "bg-success-light text-success" },
-    { status: "Pendiente", style: "bg-danger-light text-danger" },
-  ];
-
   return (
     <div className="bg-surface rounded-xl shadow-md overflow-hidden">
       {/* Encabezado de la tarjeta */}
@@ -66,15 +60,10 @@ function Table({
                 }
               >
                 {Colums.map((c) => {
-                  let style = colorStatus.find((c) => c.status == row.estado);
                   return (
                     <td key={c.key} className="px-4 py-3">
                       {c.key === "estado" ? (
-                        <span
-                          className={`${style?.style} text-xs font-medium px-4 py-1 rounded-full`}
-                        >
-                          {row[c.key]}
-                        </span>
+                        <Badge label={row[c.key]} />
                       ) : c.hasOwnProperty("type") ? (
                         formatCOP(row[c.key])
                       ) : (
