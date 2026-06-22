@@ -97,25 +97,41 @@ function TenderDetail() {
       <div className="flex-4 overflow-x-auto">
         <Table tenders={marketStudyItems} Colums={marketStudyColumns} />
       </div>
-      <div className="border border-border-base flex-1 px-4 py-4">
-        <h2 className="text-base font-semibold mb-3">Resumen</h2>
-        <div className="flex justify-between text-sm py-1">
-          <span className="text-subtitle">Items</span>
-          <span className="text-title font-medium">
-            {marketStudyItems.length}
-          </span>
+
+      <div className=" flex flex-col justify-between flex-1">
+        <div className="border border-border-base px-4 py-4">
+          <h2 className="text-base font-semibold mb-3">Resumen</h2>
+          <div className="flex justify-between text-sm py-1">
+            <span className="text-subtitle">Items</span>
+            <span className="text-title font-medium">
+              {marketStudyItems.length}
+            </span>
+          </div>
+          <div className="flex justify-between text-sm py-1">
+            <span className="text-subtitle">Subtotal</span>
+            <span className="text-title font-medium">
+              {formatCOP(subtotal)}
+            </span>
+          </div>
+          <div className="flex justify-between text-sm py-1">
+            <span className="text-subtitle">IVA (19%)</span>
+            <span className="text-title font-medium">{formatCOP(iva)}</span>
+          </div>
+          <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
+            <span className="font-semibold text-title">Total</span>
+            <span className="font-bold text-primary">{formatCOP(total)}</span>
+          </div>
         </div>
-        <div className="flex justify-between text-sm py-1">
-          <span className="text-subtitle">Subtotal</span>
-          <span className="text-title font-medium">{formatCOP(subtotal)}</span>
-        </div>
-        <div className="flex justify-between text-sm py-1">
-          <span className="text-subtitle">IVA (19%)</span>
-          <span className="text-title font-medium">{formatCOP(iva)}</span>
-        </div>
-        <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
-          <span className="font-semibold text-title">Total</span>
-          <span className="font-bold text-primary">{formatCOP(total)}</span>
+        <div className="flex gap-4  justify-between">
+          <button className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title">
+            Editar
+          </button>
+          <button className="px-4 py-1 border border-success bg-success-light text-success rounded-md text-sm hover:bg-green-100 cursor-pointer">
+            PDF
+          </button>
+          <button className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title">
+            Cerrar Licitacion
+          </button>
         </div>
       </div>
     </div>
@@ -210,14 +226,6 @@ function TenderDetail() {
               Propuesta
             </button>
           </div>
-          <div className="flex gap-4">
-            <button className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title">
-              Editar
-            </button>
-            <button className="px-4 py-1 border border-success bg-success-light text-success rounded-md text-sm hover:bg-green-100 cursor-pointer">
-              Descargar PDF
-            </button>
-          </div>
         </div>
 
         {/* contenido de la pestaña activa */}
@@ -225,9 +233,12 @@ function TenderDetail() {
       </div>
 
       {/* botones de documentos — fuera del contenedor de pestañas */}
-      <div className="flex gap-4 mt-4 justify-end">
+      <div className="flex gap-4 mt-4 justify-start">
         <button className="border border-border-base px-4 py-2 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title font-medium">
-          Generar Remisión
+          Generar Cartas
+        </button>
+        <button className="border border-border-base px-4 py-2 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title font-medium">
+          Generar Remision
         </button>
         <button className="border border-border-base px-4 py-2 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title font-medium">
           Generar Factura

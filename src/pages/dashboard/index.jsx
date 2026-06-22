@@ -34,11 +34,7 @@ function Dashboard() {
   return (
     <div className="px-4 py-6">
       {/*seccion donnde mostramos el usuario logueado*/}
-      <PageHeader
-        title={infoHeader.title}
-        subtitle={infoHeader.subtitle}
-        btnLabel={infoHeader.btnLabel}
-      />
+      <PageHeader title={infoHeader.title} subtitle={infoHeader.subtitle} />
       {/*seccion donde usamos el componente dashboardcard para renderizar las cards con sus respectivos datos*/}
       <div className="h-32 flex justify-between gap-4 mt-6">
         {GeneralInfo.map((card, index) => (

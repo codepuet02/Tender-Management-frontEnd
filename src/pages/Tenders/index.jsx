@@ -3,9 +3,19 @@ import Filters from "../../components/common/Filters";
 import Table from "../../components/common/Table";
 import { useNavigate } from "react-router-dom";
 import { tenders } from "../../data/tenders";
+import { useState } from "react";
+import ModalCreate from "../../components/Tenders/ModalCreate";
 
 function Tenders() {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   const columns = [
     { header: "Numero", key: "codigo" },
@@ -20,9 +30,10 @@ function Tenders() {
       <PageHeader
         title="Licitaciones"
         subtitle="12 Licitaciones Registradas"
-        btnLabel="Nueva Licitacion"
+        openModal={openModal}
       />
       <Filters />
+      {isOpen && <ModalCreate closeModal={closeModal} />}
       <div className="mt-6">
         <Table
           tenders={tenders}

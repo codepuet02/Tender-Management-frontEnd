@@ -7,7 +7,13 @@ import {
   Package,
 } from "lucide-react";
 
+{
+  /*coomponente que devulve las cards del dashboard*/
+}
 function DashboardCard({ card: { value, label, icon } }) {
+  {
+    /*objeto que contiene los respectivos iconos ah usar con sus estilos*/
+  }
   const icons = {
     FileText: <FileText size={28} className="text-blue-600" />,
     Package: <Package size={28} className="text-blue-600" />,

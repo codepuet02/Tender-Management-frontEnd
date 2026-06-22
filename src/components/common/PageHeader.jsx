@@ -1,4 +1,5 @@
-function PageHeader({ title, subtitle, btnLabel }) {
+import BtnCreate from "../Tenders/BtnCreate";
+function PageHeader({ title, subtitle, openModal }) {
   return (
     <div className=" flex justify-between">
       <div className="div">
@@ -6,9 +7,7 @@ function PageHeader({ title, subtitle, btnLabel }) {
         <p className="text-sm text-subtitle">{subtitle}</p>
       </div>
 
-      <button className="my-2 px-3 bg-primary text-white cursor-pointer hover:bg-primary-hover border-collapse rounded-md font-medium">
-        {btnLabel}
-      </button>
+      <BtnCreate openModal={openModal} />
     </div>
   );
 }
