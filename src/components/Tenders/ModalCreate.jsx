@@ -1,4 +1,14 @@
+import { useState } from "react";
+
 function ModalCreate({ closeModal }) {
+  const [clientId, setClientId] = useState(0);
+  const [objet, setObjet] = useState("");
+  const [date, setDate] = useState("");
+
+  function submit(data) {
+    console.log(data);
+  }
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-surface rounded-xl w-full max-w-md p-6 shadow-lg">
@@ -12,19 +22,48 @@ function ModalCreate({ closeModal }) {
           <h2 className="text-lg font-semibold text-title">Nueva Licitación</h2>
         </div>
 
-        <form className="flex flex-col gap-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            submit({ clientId, objet, date });
+          }}
+          className="flex flex-col gap-4"
+        >
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-subtitle">Cliente</label>
-            <select className="border border-border-base rounded-md px-3 py-2 text-sm text-title bg-surface focus:outline-none focus:border-primary">
-              <option value="">Seleccionar cliente...</option>
+            <label
+              htmlFor="clients"
+              className="text-sm font-medium text-subtitle"
+            >
+              Cliente
+            </label>
+            <select
+              required
+              onChange={(e) => {
+                setClientId(e.target.value);
+              }}
+              id="clients"
+              className="border border-border-base rounded-md px-3 py-2 text-sm text-title bg-surface focus:outline-none focus:border-primary"
+            >
+              <option defaultValue value="">
+                Seleccionar cliente...
+              </option>
+              <option value="1">IE. Luis Carlos Galan Sarmiento</option>
+              <option value="2">IE. Maria Fernanda Cabal</option>
             </select>
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-subtitle">
+            <label
+              htmlFor="objet"
+              className="text-sm font-medium text-subtitle"
+            >
               Objeto Contractual
             </label>
             <textarea
+              id="objet"
+              onChange={(e) => {
+                setObjet(e.target.value);
+              }}
               rows={3}
               placeholder="Describe el objeto del contrato..."
               className="border border-border-base rounded-md px-3 py-2 text-sm text-title resize-none focus:outline-none focus:border-primary"
@@ -32,28 +71,35 @@ function ModalCreate({ closeModal }) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-subtitle">
+            <label htmlFor="date" className="text-sm font-medium text-subtitle">
               Fecha de Vencimiento
             </label>
             <input
+              onChange={(e) => {
+                setDate(e.target.value);
+              }}
+              id="date"
               type="date"
               className="border border-border-base rounded-md px-3 py-2 text-sm text-title focus:outline-none focus:border-primary"
             />
           </div>
-        </form>
 
-        <div className="flex justify-end gap-2 mt-6">
-          <button
-            type="button"
-            onClick={closeModal}
-            className="px-4 py-2 text-sm font-medium rounded-md bg-secondary hover:bg-secondary-hover text-title cursor-pointer"
-          >
-            Cancelar
-          </button>
-          <button type="submit" className="px-4 py-2 text-sm font-medium rounded-md bg-primary hover:bg-primary-hover text-white cursor-pointer">
-            Crear
-          </button>
-        </div>
+          <div className="flex justify-end gap-2 mt-6">
+            <button
+              type="button"
+              onClick={closeModal}
+              className="px-4 py-2 text-sm font-medium rounded-md bg-secondary hover:bg-secondary-hover text-title cursor-pointer"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 text-sm font-medium rounded-md bg-primary hover:bg-primary-hover text-white cursor-pointer"
+            >
+              Crear
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
