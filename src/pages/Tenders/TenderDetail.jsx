@@ -3,19 +3,24 @@ import { MoveLeft } from "lucide-react";
 import Table from "../../components/common/Table";
 import { useNavigate } from "react-router-dom";
 import formatCOP from "../../utils/formatters";
+import ModalEdit from "../../components/Tenders/ModalAddProduct";
 
 function TenderDetail() {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   // pestaña activa: "estudio" o "propuesta"
   const [activeTab, setActiveTab] = useState("estudio");
 
+  function closeModal() {
+    setIsOpen(false);
+  }
   const marketStudyColumns = [
     { header: "Producto", key: "producto" },
     { header: "Proveedor", key: "proveedor" },
     { header: "Cantidad", key: "cantidad" },
     { header: "P. Compra", key: "precioCompra", type: "currency" },
-    { header: "P. Venta", key: "precioVenta", type: "currency" },
+    { header: "P. Venta", key: "precioVenta", type: "currency", isEdit: true },
     { header: "Ganancia", key: "ganancia", type: "currency" },
   ];
 
@@ -93,7 +98,7 @@ function TenderDetail() {
 
   // contenido de tabla + resumen, igual para ambas pestañas por ahora
   const tabContent = (
-    <div className="flex flex-1 px-4 py-4 gap-4">
+    <div className="flex flex-1 px-4 py-4 gap-4 ">
       <div className="flex-4 overflow-x-auto">
         <Table tenders={marketStudyItems} Colums={marketStudyColumns} />
       </div>
@@ -123,8 +128,11 @@ function TenderDetail() {
           </div>
         </div>
         <div className="flex gap-4  justify-between">
-          <button className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title">
-            Editar
+          <button
+            onClick={() => setIsOpen(true)}
+            className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title"
+          >
+            Agregar Producto
           </button>
           <button className="px-4 py-1 border border-success bg-success-light text-success rounded-md text-sm hover:bg-green-100 cursor-pointer">
             PDF
@@ -139,6 +147,7 @@ function TenderDetail() {
 
   return (
     <div className="px-4 py-6 flex flex-col">
+      {isOpen && <ModalEdit closeModal={closeModal} />}
       {/* header: botón atrás + título + acciones */}
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">

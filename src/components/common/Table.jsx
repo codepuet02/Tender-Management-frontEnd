@@ -13,6 +13,7 @@ function Table({
   navigationToDetails,
   header,
   redirecTender,
+  isEdit,
 }) {
   return (
     <div className="bg-surface rounded-xl shadow-md overflow-hidden">

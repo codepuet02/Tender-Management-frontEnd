@@ -7,6 +7,7 @@ function ModalCreate({ closeModal }) {
 
   function submit(data) {
     console.log(data);
+    closeModal();
   }
 
   return (
@@ -60,6 +61,7 @@ function ModalCreate({ closeModal }) {
               Objeto Contractual
             </label>
             <textarea
+              required
               id="objet"
               onChange={(e) => {
                 setObjet(e.target.value);
@@ -75,6 +77,7 @@ function ModalCreate({ closeModal }) {
               Fecha de Vencimiento
             </label>
             <input
+              required
               onChange={(e) => {
                 setDate(e.target.value);
               }}
