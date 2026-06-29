@@ -34,7 +34,12 @@ function Tenders() {
       />
       <Filters />
       {isOpen && <ModalCreate closeModal={closeModal} />}
-      <div className="mt-6">
+      <div className="mt-6 bg-white shadow-md">
+        <div className="px-4 py-3 border-b border-border-base flex justify-betwee">
+          <h1 className="text-lg font-semibold text-title">
+            Licitaciones Recientes
+          </h1>
+        </div>
         <Table
           tenders={tenders}
           Colums={columns}

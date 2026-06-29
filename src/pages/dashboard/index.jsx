@@ -7,10 +7,6 @@ import { tenders } from "../../data/tenders";
 function Dashboard() {
   const navigate = useNavigate();
 
-  function RedirectTenders() {
-    navigate("/tenders");
-  }
-
   const infoHeader = {
     title: "Bienvenido,Andres",
     subtitle: "Resumen General - Junio de 2026",
@@ -42,14 +38,26 @@ function Dashboard() {
         ))}
       </div>
       {/*usamos el componente Table para renderizar la respectiva tabla*/}
-      <div className=" h-96 w-full mt-6">
+      <div className="w-full mt-6 bg-white shadow-md">
+        <div className="px-4 py-3 border-b border-border-base flex justify-between">
+          <h1 className="text-lg font-semibold text-title">
+            Licitaciones Recientes
+          </h1>
+
+          <button
+            onClick={() => navigate("/tenders")}
+            className="border border-border-base rounded-md px-4 py-1 text-sm text-title hover:bg-gray-100 cursor-pointer "
+          >
+            Ver Todas
+          </button>
+        </div>
+
         <Table
           tenders={tenders}
           Colums={Colums}
           btnHeader={true}
           onRowClick={false}
           header={true}
-          redirecTender={RedirectTenders}
         />
       </div>
     </div>

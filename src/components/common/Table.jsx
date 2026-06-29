@@ -5,34 +5,10 @@ import Badge from "./Badge";
 // Props:
 //   tenders: array de licitaciones a mostrar
 //   Colums: array de columnas con { header: string, key: string }
-function Table({
-  tenders,
-  Colums,
-  btnHeader,
-  onRowClick,
-  navigationToDetails,
-  header,
-  redirecTender,
-  isEdit,
-}) {
+function Table({ tenders, Colums, onRowClick, navigationToDetails, isEdit }) {
   return (
-    <div className="bg-surface rounded-xl shadow-md overflow-hidden">
+    <div className="bg-surface overflow-hidden">
       {/* Encabezado de la tarjeta */}
-      {header && (
-        <div className="px-4 py-3 border-b border-border-base flex justify-between">
-          <h1 className="text-lg font-semibold text-title">
-            Licitaciones Recientes
-          </h1>
-          {btnHeader && (
-            <button
-              onClick={redirecTender}
-              className="border border-border-base rounded-md px-4 py-1 text-sm text-title hover:bg-gray-100 cursor-pointer "
-            >
-              Ver Todas
-            </button>
-          )}
-        </div>
-      )}
 
       <table className="w-full text-sm">
         {/* Encabezados de columna dinámicos */}
