@@ -8,80 +8,28 @@ import ModalEdit from "../../components/Tenders/ModalAddProduct";
 function TenderDetail() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [products, setProducts] = useState([]);
   // pestaña activa: "estudio" o "propuesta"
   const [activeTab, setActiveTab] = useState("estudio");
 
   function closeModal() {
     setIsOpen(false);
   }
+
+  function addProduct(product) {
+    setProducts((prev) => [...prev, product]);
+    setIsOpen(false);
+  }
   const marketStudyColumns = [
     { header: "Producto", key: "producto" },
-    { header: "Proveedor", key: "proveedor" },
+    { header: "Proveedor", key: "nombre" },
     { header: "Cantidad", key: "cantidad" },
     { header: "P. Compra", key: "precioCompra", type: "currency" },
     { header: "P. Venta", key: "precioVenta", type: "currency", isEdit: true },
     { header: "Ganancia", key: "ganancia", type: "currency" },
   ];
 
-  const marketStudyItems = [
-    {
-      id: 1,
-      producto: "Transformador 25 kVA",
-      proveedor: "TechSolutions Ltda.",
-      cantidad: 5,
-      precioCompra: 2500000,
-      precioVenta: 3000000,
-      ganancia: 2500000,
-    },
-    {
-      id: 2,
-      producto: "Cable THHN Cal. 12",
-      proveedor: "Grupo Electrónico",
-      cantidad: 200,
-      precioCompra: 8500,
-      precioVenta: 12000,
-      ganancia: 700000,
-    },
-    {
-      id: 3,
-      producto: "UPS 3000 VA",
-      proveedor: "Equipos Industriales S.A.",
-      cantidad: 2,
-      precioCompra: 4200000,
-      precioVenta: 5100000,
-      ganancia: 1800000,
-    },
-    {
-      id: 3,
-      producto: "UPS 3000 VA",
-      proveedor: "Equipos Industriales S.A.",
-      cantidad: 2,
-      precioCompra: 4200000,
-      precioVenta: 5100000,
-      ganancia: 1800000,
-    },
-    {
-      id: 3,
-      producto: "UPS 3000 VA",
-      proveedor: "Equipos Industriales S.A.",
-      cantidad: 2,
-      precioCompra: 4200000,
-      precioVenta: 5100000,
-      ganancia: 1800000,
-    },
-    {
-      id: 3,
-      producto: "UPS 3000 VA",
-      proveedor: "Equipos Industriales S.A.",
-      cantidad: 2,
-      precioCompra: 4200000,
-      precioVenta: 5100000,
-      ganancia: 1800000,
-    },
-  ];
-
-  const subtotal = marketStudyItems.reduce(
+  const subtotal = products.reduce(
     (sum, item) => sum + item.precioVenta * item.cantidad,
     0,
   );
@@ -98,19 +46,17 @@ function TenderDetail() {
 
   // contenido de tabla + resumen, igual para ambas pestañas por ahora
   const tabContent = (
-    <div className="flex flex-1 px-4 py-4 gap-4 ">
-      <div className="flex-4 overflow-x-auto">
-        <Table tenders={marketStudyItems} Colums={marketStudyColumns} />
+    <div className="flex flex-1 px-4 py-4 gap-4">
+      <div className="flex-3 overflow-x-auto">
+        <Table tenders={products} Colums={marketStudyColumns} />
       </div>
 
-      <div className=" flex flex-col justify-between flex-1">
-        <div className="border border-border-base px-4 py-4">
+      <div className=" flex flex-col justify-between flex-1  gap-8">
+        <div className="border border-border-base px-4 py-4 flex-1 ">
           <h2 className="text-base font-semibold mb-3">Resumen</h2>
           <div className="flex justify-between text-sm py-1">
             <span className="text-subtitle">Items</span>
-            <span className="text-title font-medium">
-              {marketStudyItems.length}
-            </span>
+            <span className="text-title font-medium">{products.length}</span>
           </div>
           <div className="flex justify-between text-sm py-1">
             <span className="text-subtitle">Subtotal</span>
@@ -130,14 +76,14 @@ function TenderDetail() {
         <div className="flex gap-4  justify-between">
           <button
             onClick={() => setIsOpen(true)}
-            className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title"
+            className="border border-border-base px-4 py-2 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title"
           >
             Agregar Producto
           </button>
-          <button className="px-4 py-1 border border-success bg-success-light text-success rounded-md text-sm hover:bg-green-100 cursor-pointer">
+          <button className="px-4 py-2 border border-success bg-success-light text-success rounded-md text-sm hover:bg-green-100 cursor-pointer">
             PDF
           </button>
-          <button className="border border-border-base px-4 py-1 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title">
+          <button className="border border-border-base px-4 py-2 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title">
             Cerrar Licitacion
           </button>
         </div>
@@ -146,8 +92,8 @@ function TenderDetail() {
   );
 
   return (
-    <div className="px-4 py-6 flex flex-col">
-      {isOpen && <ModalEdit closeModal={closeModal} />}
+    <div className="px-4 py-6 flex flex-col  min-h-[calc(100vh-64px)] ">
+      {isOpen && <ModalEdit closeModal={closeModal} addProduct={addProduct} />}
       {/* header: botón atrás + título + acciones */}
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
@@ -218,7 +164,7 @@ function TenderDetail() {
       </div>
 
       {/* contenedor de pestañas */}
-      <div className="mt-4 border border-border-base rounded-lg bg-white flex flex-col">
+      <div className="mt-4 border border-border-base rounded-lg bg-white flex flex-col flex-1">
         {/* pestañas + botones de acción en la misma barra */}
         <div className="flex justify-between items-center border-b border-border-base px-4">
           <div className="flex">

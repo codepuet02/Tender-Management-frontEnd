@@ -2,7 +2,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 import formatCOP from "../../utils/formatters";
 
-function ModalEdit({ closeModal }) {
+function ModalEdit({ closeModal, addProduct }) {
   const [providerId, setProviderId] = useState(0);
   const [search, setSearch] = useState("");
 
@@ -169,7 +169,18 @@ function ModalEdit({ closeModal }) {
             >
               Cancelar
             </button>
-            <button className="px-4 py-2 text-sm font-medium rounded-md bg-primary hover:bg-primary-hover text-white cursor-pointer">
+            <button
+              onClick={() => {
+                let selectedProduct = proveedores.find(
+                  (p) => p.id === providerId,
+                );
+                addProduct({
+                  ...selectedProduct,
+                  cantidad: 1,
+                });
+              }}
+              className="px-4 py-2 text-sm font-medium rounded-md bg-primary hover:bg-primary-hover text-white cursor-pointer"
+            >
               Agregar
             </button>
           </div>
