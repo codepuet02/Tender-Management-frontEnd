@@ -7,7 +7,6 @@ function RowActions({
   cancelEdit,
   isEditing,
 }) {
-  console.log("isEditing", isEditing);
   return (
     <div className="flex gap-2">
       <button

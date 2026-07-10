@@ -3,7 +3,7 @@ import { useState } from "react";
 import formatCOP from "../../utils/formatters";
 
 function ModalEdit({ closeModal, addProduct }) {
-  const [providerId, setProviderId] = useState(0);
+  const [providerId, setProviderId] = useState(null);
   const [search, setSearch] = useState("");
 
   const Colums = [

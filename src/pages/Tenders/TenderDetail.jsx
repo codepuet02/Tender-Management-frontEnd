@@ -20,6 +20,20 @@ function TenderDetail() {
     setProducts((prev) => [...prev, product]);
     setIsOpen(false);
   }
+
+  function deletedRowProduct(id) {
+    setProducts((prev) => prev.filter((product) => product.id !== id));
+  }
+
+  function saveEditedProduct(id, amount, price) {
+    setProducts((prev) =>
+      prev.map((product) =>
+        product.id === id
+          ? { ...product, cantidad: amount, precioVenta: price }
+          : product,
+      ),
+    );
+  }
   const marketStudyColumns = [
     { header: "Producto", key: "producto" },
     { header: "Proveedor", key: "nombre" },
@@ -52,6 +66,8 @@ function TenderDetail() {
         <TenderProductEditableTable
           tenders={products}
           Colums={marketStudyColumns}
+          saveEditedProduct={saveEditedProduct}
+          deletedRowProduct={deletedRowProduct}
         />
       </div>
 

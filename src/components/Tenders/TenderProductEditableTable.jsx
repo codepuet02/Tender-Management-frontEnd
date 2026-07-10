@@ -1,16 +1,39 @@
 import formatCOP from "../../utils/formatters";
 import RowActions from "../common/RowActions";
 import { useState } from "react";
-function TenderProductEditableTable({ tenders, Colums }) {
+function TenderProductEditableTable({
+  tenders,
+  Colums,
+  saveEditedProduct,
+  deletedRowProduct,
+}) {
   const [editId, setEditId] = useState(null);
+  const [amount, setAmount] = useState(1);
+  const [price, setPrice] = useState(0);
 
   function editProduct(id) {
     setEditId(id);
+    let product = tenders.find((p) => p.id === id);
+    setAmount(product.cantidad);
+    setPrice(product.precioVenta);
   }
-  function saveProduct(id) {}
-  function cancelEdit() {}
+  function cancelEdit() {
+    setEditId(null);
+  }
+  function saveProduct(id) {
+    if (amount === "" || price === "") {
+      alert("Por favor, complete todos los campos antes de guardar.");
+      return;
+    }
+    saveEditedProduct(id, amount, price);
+    setEditId(null);
+    setAmount(1);
+    setPrice(0);
+  }
 
-  function deleteProduct() {}
+  function deleteProduct(id) {
+    deletedRowProduct(id);
+  }
   return (
     <div className="bg-surface ">
       <table className="w-full text-sm table-fixed">
@@ -34,10 +57,26 @@ function TenderProductEditableTable({ tenders, Colums }) {
                   return (
                     <td key={c.key} className="px-4 py-3">
                       {editId === row.id && c.isEdit ? (
-                        <input
-                          className="border w-full border-border-base px-1 py-1 text-sm focus:outline-none "
-                          defaultValue={row[c.key]}
-                        ></input>
+                        c.type === "currency" ? (
+                          <input
+                            className="border w-full border-border-base px-1 py-1 text-sm focus:outline-none "
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            type="number"
+                            min="0"
+                            max="99999999999"
+                          ></input>
+                        ) : (
+                          <input
+                            type="number"
+                            min="1"
+                            step="1"
+                            max="100"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            className="border w-full border-border-base px-1 py-1 text-sm focus:outline-none "
+                          ></input>
+                        )
                       ) : c.type === "currency" ? (
                         formatCOP(row[c.key])
                       ) : c.type === "actions" ? (

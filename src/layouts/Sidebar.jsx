@@ -26,7 +26,7 @@ function Sidebar() {
           to="/"
           className={({ isActive }) =>
             isActive
-              ? "flex items-center gap-1 text-white bg-sidebar-active p-2 flex "
+              ? "flex items-center gap-1 text-white bg-sidebar-active p-2 "
               : "text-sidebar-text hover:bg-sidebar-active text-base font-medium p-2 flex items-center gap-1"
           }
         >
