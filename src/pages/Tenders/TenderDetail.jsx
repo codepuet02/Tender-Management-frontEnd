@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MoveLeft } from "lucide-react";
-import Table from "../../components/common/Table";
+import TenderProductEditableTable from "../../components/Tenders/TenderProductEditableTable";
 import { useNavigate } from "react-router-dom";
 import formatCOP from "../../utils/formatters";
 import ModalEdit from "../../components/Tenders/ModalAddProduct";
@@ -23,10 +23,11 @@ function TenderDetail() {
   const marketStudyColumns = [
     { header: "Producto", key: "producto" },
     { header: "Proveedor", key: "nombre" },
-    { header: "Cantidad", key: "cantidad" },
+    { header: "Cantidad", key: "cantidad", isEdit: true },
     { header: "P. Compra", key: "precioCompra", type: "currency" },
     { header: "P. Venta", key: "precioVenta", type: "currency", isEdit: true },
     { header: "Ganancia", key: "ganancia", type: "currency" },
+    { header: "Acciones", key: "acciones", type: "actions" },
   ];
 
   const subtotal = products.reduce(
@@ -46,12 +47,15 @@ function TenderDetail() {
 
   // contenido de tabla + resumen, igual para ambas pestañas por ahora
   const tabContent = (
-    <div className="flex flex-1 px-4 py-4 gap-4">
-      <div className="flex-3 overflow-x-auto">
-        <Table tenders={products} Colums={marketStudyColumns} />
+    <div className="flex  px-4 py-4 gap-4 min-h-0 flex-1">
+      <div className="overflow-auto flex-1">
+        <TenderProductEditableTable
+          tenders={products}
+          Colums={marketStudyColumns}
+        />
       </div>
 
-      <div className=" flex flex-col justify-between flex-1  gap-8">
+      <div className=" flex  flex-col justify-between  gap-8   ">
         <div className="border border-border-base px-4 py-4 flex-1 ">
           <h2 className="text-base font-semibold mb-3">Resumen</h2>
           <div className="flex justify-between text-sm py-1">
@@ -92,10 +96,10 @@ function TenderDetail() {
   );
 
   return (
-    <div className="px-4 py-6 flex flex-col  min-h-[calc(100vh-64px)] ">
+    <div className="px-4 py-6 flex flex-col  h-[calc(100vh-64px)] ">
       {isOpen && <ModalEdit closeModal={closeModal} addProduct={addProduct} />}
       {/* header: botón atrás + título + acciones */}
-      <div className="flex justify-between items-center">
+      <div className="flex  justify-between items-center">
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate(-1)}
@@ -164,7 +168,7 @@ function TenderDetail() {
       </div>
 
       {/* contenedor de pestañas */}
-      <div className="mt-4 border border-border-base rounded-lg bg-white flex flex-col flex-1">
+      <div className="mt-4 border border-border-base rounded-lg bg-white flex flex-col flex-1 min-h-0">
         {/* pestañas + botones de acción en la misma barra */}
         <div className="flex justify-between items-center border-b border-border-base px-4">
           <div className="flex">
@@ -188,7 +192,7 @@ function TenderDetail() {
       </div>
 
       {/* botones de documentos — fuera del contenedor de pestañas */}
-      <div className="flex gap-4 mt-4 justify-start">
+      <div className="flex gap-4 mt-4 justify-start ">
         <button className="border border-border-base px-4 py-2 rounded-md text-sm hover:bg-gray-100 bg-white cursor-pointer text-title font-medium">
           Generar Cartas
         </button>
