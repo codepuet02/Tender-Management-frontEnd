@@ -170,6 +170,7 @@ function ModalEdit({ closeModal, addProduct }) {
               Cancelar
             </button>
             <button
+              disabled={providerId === null ? true : false}
               onClick={() => {
                 let selectedProduct = proveedores.find(
                   (p) => p.id === providerId,
@@ -179,7 +180,11 @@ function ModalEdit({ closeModal, addProduct }) {
                   cantidad: 1,
                 });
               }}
-              className="px-4 py-2 text-sm font-medium rounded-md bg-primary hover:bg-primary-hover text-white cursor-pointer"
+              className={
+                providerId === null
+                  ? "px-4 py-2 text-sm font-medium rounded-md bg-secondary text-muted cursor-not-allowed"
+                  : "px-4 py-2 text-sm font-medium rounded-md bg-primary hover:bg-primary-hover text-white cursor-pointer"
+              }
             >
               Agregar
             </button>
