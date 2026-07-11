@@ -11,6 +11,10 @@ function TenderProductEditableTable({
   const [amount, setAmount] = useState(1);
   const [price, setPrice] = useState(0);
 
+  function calculateProfit(price, cost) {
+    return price - cost;
+  }
+
   function editProduct(id) {
     setEditId(id);
     let product = tenders.find((p) => p.id === id);
@@ -34,6 +38,59 @@ function TenderProductEditableTable({
   function deleteProduct(id) {
     deletedRowProduct(id);
   }
+
+  function renderCellContent(row, columns) {
+    if (editId === row.id && columns.isEdit) {
+      if (columns.type === "currency") {
+        return (
+          <input
+            className="border w-full border-border-base px-1 py-1 text-sm focus:outline-none "
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            type="number"
+            min="0"
+            max="99999999999"
+          ></input>
+        );
+      } else {
+        return (
+          <input
+            type="number"
+            min="1"
+            step="1"
+            max="100"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="border w-full border-border-base px-1 py-1 text-sm focus:outline-none "
+          ></input>
+        );
+      }
+    }
+
+    switch (columns.type) {
+      case "currency":
+        if (columns.key === "ganancia") {
+          return formatCOP(calculateProfit(row.precioVenta, row.precioCompra));
+        }
+        return formatCOP(row[columns.key]);
+
+      case "actions":
+        return (
+          <RowActions
+            onEdit={editProduct}
+            onDelete={deleteProduct}
+            id={row.id}
+            saveProduct={saveProduct}
+            cancelEdit={cancelEdit}
+            isEditing={editId === row.id}
+          />
+        );
+
+      default:
+        return row[columns.key];
+    }
+  }
+
   return (
     <div className="bg-surface ">
       <table className="w-full text-sm table-fixed">
@@ -56,41 +113,7 @@ function TenderProductEditableTable({
                 {Colums.map((c) => {
                   return (
                     <td key={c.key} className="px-4 py-3">
-                      {editId === row.id && c.isEdit ? (
-                        c.type === "currency" ? (
-                          <input
-                            className="border w-full border-border-base px-1 py-1 text-sm focus:outline-none "
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            type="number"
-                            min="0"
-                            max="99999999999"
-                          ></input>
-                        ) : (
-                          <input
-                            type="number"
-                            min="1"
-                            step="1"
-                            max="100"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            className="border w-full border-border-base px-1 py-1 text-sm focus:outline-none "
-                          ></input>
-                        )
-                      ) : c.type === "currency" ? (
-                        formatCOP(row[c.key])
-                      ) : c.type === "actions" ? (
-                        <RowActions
-                          onEdit={editProduct}
-                          onDelete={deleteProduct}
-                          id={row.id}
-                          saveProduct={saveProduct}
-                          cancelEdit={cancelEdit}
-                          isEditing={editId === row.id}
-                        />
-                      ) : (
-                        row[c.key]
-                      )}
+                      {renderCellContent(row, c)}
                     </td>
                   );
                 })}
