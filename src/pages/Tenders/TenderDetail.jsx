@@ -8,25 +8,43 @@ import ModalEdit from "../../components/Tenders/ModalAddProduct";
 function TenderDetail() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [productMarketStudy, setProductMarketStudy] = useState([]);
+  const [productProposal, setProductProposal] = useState([]);
+  const [stepCurrent, setStepCurrent] = useState("marketStudy");
+  const steps = ["marketStudy", "proposal", "document"];
   // pestaña activa: "estudio" o "propuesta"
-  const [activeTab, setActiveTab] = useState("estudio");
+  const [activeTab, setActiveTab] = useState("marketStudy");
 
   function closeModal() {
     setIsOpen(false);
   }
 
+  function saveEditProductProposal(id, amount, price) {
+    setProductProposal((prev) =>
+      prev.map((product) =>
+        product.id === id
+          ? { ...product, cantidad: amount, precioVenta: price }
+          : product,
+      ),
+    );
+  }
+
+  function deletedRowProductProposal(id) {
+    setProductProposal((prev) => prev.filter((product) => product.id !== id));
+  }
   function addProduct(product) {
-    setProducts((prev) => [...prev, product]);
+    setProductMarketStudy((prev) => [...prev, product]);
     setIsOpen(false);
   }
 
   function deletedRowProduct(id) {
-    setProducts((prev) => prev.filter((product) => product.id !== id));
+    setProductMarketStudy((prev) =>
+      prev.filter((product) => product.id !== id),
+    );
   }
 
   function saveEditedProduct(id, amount, price) {
-    setProducts((prev) =>
+    setProductMarketStudy((prev) =>
       prev.map((product) =>
         product.id === id
           ? { ...product, cantidad: amount, precioVenta: price }
@@ -44,13 +62,6 @@ function TenderDetail() {
     { header: "Acciones", key: "acciones", type: "actions" },
   ];
 
-  const subtotal = products.reduce(
-    (sum, item) => sum + item.precioVenta * item.cantidad,
-    0,
-  );
-  const iva = subtotal * 0.19;
-  const total = subtotal + iva;
-
   // estilos reutilizables para las pestañas
   const tabStyle = (tab) =>
     `px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
@@ -59,62 +70,101 @@ function TenderDetail() {
         : "border-transparent text-subtitle hover:text-title"
     }`;
 
-  // contenido de tabla + resumen, igual para ambas pestañas por ahora
-  const tabContent = (
-    <div className="flex flex-col  px-2 py-0  min-h-0 flex-1 ">
-      <div className=" flex gap-4 justify-end py-2 ">
-        <button
-          onClick={() => setIsOpen(true)}
-          className=" border border-primary px-4 py-1 rounded-md text-sm hover:bg-primary-hover bg-primary cursor-pointer text-white font-medium "
-        >
-          Agregar Producto
-        </button>
-        <button className="px-4 py-1 border border-success bg-success text-white rounded-md text-sm hover:bg-green-700 cursor-pointer font-medium">
-          Exportar PDF
-        </button>
-      </div>
-      <div className=" flex h-full min-h-0 gap-1">
-        <div className="overflow-auto flex-3 ">
-          <TenderProductEditableTable
-            tenders={products}
-            Colums={marketStudyColumns}
-            saveEditedProduct={saveEditedProduct}
-            deletedRowProduct={deletedRowProduct}
-          />
-        </div>
+  function contentPerCurrentStep(step) {
+    let caluledPerTab =
+      step === "marketStudy" ? productMarketStudy : productProposal;
+    const subtotal = caluledPerTab.reduce(
+      (sum, item) => sum + item.precioVenta * item.cantidad,
+      0,
+    );
+    const iva = subtotal * 0.19;
+    const total = subtotal + iva;
 
-        <div className=" flex  flex-col justify-between  flex-1   ">
-          <div className="border border-border-base px-4 py-4 flex-1 ">
-            <h2 className="text-base font-semibold mb-3">Resumen</h2>
-            <div className="flex justify-between text-sm py-1">
-              <span className="text-subtitle">Items</span>
-              <span className="text-title font-medium">{products.length}</span>
-            </div>
-            <div className="flex justify-between text-sm py-1">
-              <span className="text-subtitle">Subtotal</span>
-              <span className="text-title font-medium">
-                {formatCOP(subtotal)}
-              </span>
-            </div>
-            <div className="flex justify-between text-sm py-1">
-              <span className="text-subtitle">IVA (19%)</span>
-              <span className="text-title font-medium">{formatCOP(iva)}</span>
-            </div>
-            <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
-              <span className="font-semibold text-title">Total</span>
-              <span className="font-bold text-primary">{formatCOP(total)}</span>
-            </div>
-          </div>
-          <div className="flex gap-4  justify-center py-4 ">
-            <button className="flex items-center gap-2 border border-danger  px-4 py-2 rounded-md text-sm bg-danger-light hover:bg-red-100 cursor-pointer text-danger font-medium">
-              Cerrar Cotizacion
-              <MoveRight size={17} />
+    return (
+      <div className="flex flex-col  px-2 py-0  min-h-0 flex-1 ">
+        <div className=" flex gap-4 justify-end py-2 ">
+          {step === "marketStudy" && (
+            <button
+              onClick={() => setIsOpen(true)}
+              className=" border border-primary px-4 py-1 rounded-md text-sm hover:bg-primary-hover bg-primary cursor-pointer text-white font-medium "
+            >
+              Agregar Producto
             </button>
+          )}
+          <button className="px-4 py-1 border border-success bg-success text-white rounded-md text-sm hover:bg-green-700 cursor-pointer font-medium">
+            Exportar PDF
+          </button>
+        </div>
+        <div className=" flex h-full min-h-0 gap-1">
+          <div className="overflow-auto flex-3 ">
+            <TenderProductEditableTable
+              tenders={
+                step === "marketStudy" ? productMarketStudy : productProposal
+              }
+              Colums={marketStudyColumns}
+              saveEditedProduct={
+                step === "marketStudy"
+                  ? saveEditedProduct
+                  : saveEditProductProposal
+              }
+              deletedRowProduct={
+                step === "marketStudy"
+                  ? deletedRowProduct
+                  : deletedRowProductProposal
+              }
+            />
+          </div>
+
+          <div className=" flex  flex-col justify-between  flex-1   ">
+            <div className="border border-border-base px-4 py-4 flex-1 ">
+              <h2 className="text-base font-semibold mb-3">Resumen</h2>
+              <div className="flex justify-between text-sm py-1">
+                <span className="text-subtitle">Items</span>
+                <span className="text-title font-medium">
+                  {caluledPerTab.length}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm py-1">
+                <span className="text-subtitle">Subtotal</span>
+                <span className="text-title font-medium">
+                  {formatCOP(subtotal)}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm py-1">
+                <span className="text-subtitle">IVA (19%)</span>
+                <span className="text-title font-medium">{formatCOP(iva)}</span>
+              </div>
+              <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
+                <span className="font-semibold text-title">Total</span>
+                <span className="font-bold text-primary">
+                  {formatCOP(total)}
+                </span>
+              </div>
+            </div>
+            <div className="flex gap-4  justify-center py-4 ">
+              <button
+                onClick={() => {
+                  if (activeTab === "marketStudy") {
+                    setProductProposal(
+                      productMarketStudy.map((p) => ({ ...p })),
+                    );
+                    setActiveTab("proposal");
+                    setStepCurrent("proposal");
+                  }
+                }}
+                className="flex items-center gap-2 border border-danger  px-4 py-2 rounded-md text-sm bg-danger-light hover:bg-red-100 cursor-pointer text-danger font-medium"
+              >
+                Cerrar Cotizacion
+                <MoveRight size={17} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  // contenido de tabla + resumen, igual para ambas pestañas por ahora
 
   return (
     <div className="px-2 py-2 flex flex-col  h-[calc(100vh-64px)] ">
@@ -194,14 +244,15 @@ function TenderDetail() {
         <div className="flex justify-between items-center border-b border-border-base px-4">
           <div className="flex">
             <button
-              className={tabStyle("estudio")}
-              onClick={() => setActiveTab("estudio")}
+              className={tabStyle("marketStudy")}
+              onClick={() => setActiveTab("marketStudy")}
             >
               Estudio de Mercado
             </button>
             <button
-              className={tabStyle("propuesta")}
-              onClick={() => setActiveTab("propuesta")}
+              disabled={steps.indexOf(stepCurrent) <= 0 ? true : false}
+              className={tabStyle("proposal")}
+              onClick={() => setActiveTab("proposal")}
             >
               Propuesta
             </button>
@@ -209,7 +260,7 @@ function TenderDetail() {
         </div>
 
         {/* contenido de la pestaña activa */}
-        {tabContent}
+        {contentPerCurrentStep(activeTab)}
       </div>
     </div>
   );
