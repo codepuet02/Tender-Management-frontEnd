@@ -6,6 +6,7 @@ function TenderProductEditableTable({
   Colums,
   saveEditedProduct,
   deletedRowProduct,
+  isLocked,
 }) {
   const [editId, setEditId] = useState(null);
   const [amount, setAmount] = useState(1);
@@ -83,6 +84,7 @@ function TenderProductEditableTable({
             saveProduct={saveProduct}
             cancelEdit={cancelEdit}
             isEditing={editId === row.id}
+            isLocked={isLocked}
           />
         );
 

@@ -11,8 +11,7 @@ function TenderDetail() {
   const [productMarketStudy, setProductMarketStudy] = useState([]);
   const [productProposal, setProductProposal] = useState([]);
   const [stepCurrent, setStepCurrent] = useState("marketStudy");
-  const steps = ["marketStudy", "proposal", "document"];
-  // pestaña activa: "estudio" o "propuesta"
+  const steps = ["marketStudy", "proposal", "documents"];
   const [activeTab, setActiveTab] = useState("marketStudy");
 
   function closeModal() {
@@ -52,6 +51,7 @@ function TenderDetail() {
       ),
     );
   }
+
   const marketStudyColumns = [
     { header: "Producto", key: "producto" },
     { header: "Proveedor", key: "nombre" },
@@ -79,87 +79,114 @@ function TenderDetail() {
     );
     const iva = subtotal * 0.19;
     const total = subtotal + iva;
+    let isLocked = activeTab != stepCurrent;
 
     return (
-      <div className="flex flex-col  px-2 py-0  min-h-0 flex-1 ">
-        <div className=" flex gap-4 justify-end py-2 ">
-          {step === "marketStudy" && (
-            <button
-              onClick={() => setIsOpen(true)}
-              className=" border border-primary px-4 py-1 rounded-md text-sm hover:bg-primary-hover bg-primary cursor-pointer text-white font-medium "
-            >
-              Agregar Producto
-            </button>
-          )}
-          <button className="px-4 py-1 border border-success bg-success text-white rounded-md text-sm hover:bg-green-700 cursor-pointer font-medium">
-            Exportar PDF
-          </button>
-        </div>
-        <div className=" flex h-full min-h-0 gap-1">
-          <div className="overflow-auto flex-3 ">
-            <TenderProductEditableTable
-              tenders={
-                step === "marketStudy" ? productMarketStudy : productProposal
-              }
-              Colums={marketStudyColumns}
-              saveEditedProduct={
-                step === "marketStudy"
-                  ? saveEditedProduct
-                  : saveEditProductProposal
-              }
-              deletedRowProduct={
-                step === "marketStudy"
-                  ? deletedRowProduct
-                  : deletedRowProductProposal
-              }
-            />
-          </div>
-
-          <div className=" flex  flex-col justify-between  flex-1   ">
-            <div className="border border-border-base px-4 py-4 flex-1 ">
-              <h2 className="text-base font-semibold mb-3">Resumen</h2>
-              <div className="flex justify-between text-sm py-1">
-                <span className="text-subtitle">Items</span>
-                <span className="text-title font-medium">
-                  {caluledPerTab.length}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm py-1">
-                <span className="text-subtitle">Subtotal</span>
-                <span className="text-title font-medium">
-                  {formatCOP(subtotal)}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm py-1">
-                <span className="text-subtitle">IVA (19%)</span>
-                <span className="text-title font-medium">{formatCOP(iva)}</span>
-              </div>
-              <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
-                <span className="font-semibold text-title">Total</span>
-                <span className="font-bold text-primary">
-                  {formatCOP(total)}
-                </span>
-              </div>
-            </div>
-            <div className="flex gap-4  justify-center py-4 ">
+      <div className="flex flex-col  px-2 py-0  min-h-0 flex-1">
+        {step !== "documents" && (
+          <div className=" flex gap-4 justify-end py-2">
+            {step === "marketStudy" && (
               <button
-                onClick={() => {
-                  if (activeTab === "marketStudy") {
-                    setProductProposal(
-                      productMarketStudy.map((p) => ({ ...p })),
-                    );
-                    setActiveTab("proposal");
-                    setStepCurrent("proposal");
-                  }
-                }}
-                className="flex items-center gap-2 border border-danger  px-4 py-2 rounded-md text-sm bg-danger-light hover:bg-red-100 cursor-pointer text-danger font-medium"
+                disabled={isLocked ? true : false}
+                onClick={() => setIsOpen(true)}
+                className={
+                  isLocked
+                    ? "px-4 py-1 rounded-md text-sm bg-secondary cursor-not-allowed text-muted font-medium "
+                    : " border border-primary px-4 py-1 rounded-md text-sm hover:bg-primary-hover bg-primary cursor-pointer text-white font-medium "
+                }
               >
-                Cerrar Cotizacion
-                <MoveRight size={17} />
+                Agregar Producto
               </button>
+            )}
+            <button className="px-4 py-1 border border-success bg-success text-white rounded-md text-sm hover:bg-green-700 cursor-pointer font-medium">
+              Exportar PDF
+            </button>
+          </div>
+        )}
+        {step !== "documents" && (
+          <div className=" flex h-full min-h-0 gap-1">
+            <div className="overflow-auto flex-3 ">
+              <TenderProductEditableTable
+                tenders={
+                  step === "marketStudy" ? productMarketStudy : productProposal
+                }
+                Colums={marketStudyColumns}
+                saveEditedProduct={
+                  step === "marketStudy"
+                    ? saveEditedProduct
+                    : saveEditProductProposal
+                }
+                deletedRowProduct={
+                  step === "marketStudy"
+                    ? deletedRowProduct
+                    : deletedRowProductProposal
+                }
+                isLocked={isLocked}
+              />
+            </div>
+
+            <div className=" flex  flex-col justify-between  flex-1   ">
+              <div className="border border-border-base px-4 py-4 flex-1 ">
+                <h2 className="text-base font-semibold mb-3">Resumen</h2>
+                <div className="flex justify-between text-sm py-1">
+                  <span className="text-subtitle">Items</span>
+                  <span className="text-title font-medium">
+                    {caluledPerTab.length}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm py-1">
+                  <span className="text-subtitle">Subtotal</span>
+                  <span className="text-title font-medium">
+                    {formatCOP(subtotal)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm py-1">
+                  <span className="text-subtitle">IVA (19%)</span>
+                  <span className="text-title font-medium">
+                    {formatCOP(iva)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-base pt-2 mt-2 border-t border-border-base">
+                  <span className="font-semibold text-title">Total</span>
+                  <span className="font-bold text-primary">
+                    {formatCOP(total)}
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-4  justify-center py-4 ">
+                <button
+                  disabled={isLocked ? true : false}
+                  onClick={() => {
+                    if (caluledPerTab.length <= 0) {
+                      alert("Debes seleccionar productos");
+                      return;
+                    }
+                    if (activeTab === "marketStudy") {
+                      setProductProposal(
+                        productMarketStudy.map((p) => ({ ...p })),
+                      );
+                      setActiveTab("proposal");
+                      setStepCurrent("proposal");
+                    } else if (activeTab === "proposal") {
+                      setActiveTab("documents");
+                      setStepCurrent("documents");
+                    }
+                  }}
+                  className={
+                    isLocked
+                      ? "flex items-center gap-2 px-4 py-2 rounded-md text-sm bg-secondary   text-muted cursor-not-allowed font-medium"
+                      : "flex items-center gap-2 border border-danger  px-4 py-2 rounded-md text-sm bg-danger-light hover:bg-red-100 cursor-pointer text-danger font-medium"
+                  }
+                >
+                  Cerrar Cotizacion
+                  <MoveRight size={17} />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {step === "documents" && <div className="border h-full"></div>}
       </div>
     );
   }
@@ -255,6 +282,13 @@ function TenderDetail() {
               onClick={() => setActiveTab("proposal")}
             >
               Propuesta
+            </button>
+            <button
+              disabled={steps.indexOf(stepCurrent) <= 1 ? true : false}
+              className={tabStyle("documents")}
+              onClick={() => setActiveTab("documents")}
+            >
+              Documentos
             </button>
           </div>
         </div>
