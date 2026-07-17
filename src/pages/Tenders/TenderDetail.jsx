@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MoveLeft, MoveRight } from "lucide-react";
+import { MoveLeft, MoveRight, FileText } from "lucide-react";
 import TenderProductEditableTable from "../../components/Tenders/TenderProductEditableTable";
 import { useNavigate } from "react-router-dom";
 import formatCOP from "../../utils/formatters";
@@ -186,7 +186,79 @@ function TenderDetail() {
           </div>
         )}
 
-        {step === "documents" && <div className="border h-full"></div>}
+        {step === "documents" && (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-full max-w-3xl">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="border border-border-base rounded-lg p-4 flex flex-col gap-3 bg-white">
+                  <div className="flex items-start justify-between">
+                    <div className="w-10 h-10 rounded-md bg-success-light text-success flex items-center justify-center">
+                      <FileText size={20} />
+                    </div>
+                    <span className="text-xs font-semibold px-2 py-1 rounded-full bg-success-light text-success">
+                      Descargada
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-title">Carta</p>
+                    <p className="text-xs text-subtitle">
+                      128 KB · 14 jul 2026
+                    </p>
+                  </div>
+                  <button className="border border-border-base rounded-md py-2 text-sm font-medium hover:bg-gray-100 cursor-pointer">
+                    Descargar de nuevo
+                  </button>
+                </div>
+
+                <div className="border border-primary rounded-lg p-4 flex flex-col gap-3 bg-white">
+                  <div className="flex items-start justify-between">
+                    <div className="w-10 h-10 rounded-md bg-primary-light text-primary flex items-center justify-center">
+                      <FileText size={20} />
+                    </div>
+                    <span className="text-xs font-semibold px-2 py-1 rounded-full bg-primary text-white">
+                      Disponible
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-title">Remisión</p>
+                    <p className="text-xs text-subtitle">96 KB</p>
+                  </div>
+                  <button className="border border-primary bg-primary text-white rounded-md py-2 text-sm font-medium hover:bg-primary-hover cursor-pointer">
+                    Descargar
+                  </button>
+                </div>
+
+                <div className="border border-border-base rounded-lg p-4 flex flex-col gap-3 bg-white opacity-80">
+                  <div className="flex items-start justify-between">
+                    <div className="w-10 h-10 rounded-md bg-secondary text-muted flex items-center justify-center">
+                      <FileText size={20} />
+                    </div>
+                    <span className="text-xs font-semibold px-2 py-1 rounded-full bg-secondary text-muted">
+                      Bloqueada
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-title">Factura</p>
+                    <p className="text-xs text-muted">
+                      Se desbloquea al descargar Remisión
+                    </p>
+                  </div>
+                  <button
+                    disabled
+                    className="border border-border-base bg-secondary text-muted rounded-md py-2 text-sm font-medium cursor-not-allowed"
+                  >
+                    Descargar
+                  </button>
+                </div>
+              </div>
+
+              <p className="text-center text-xs text-subtitle mt-4">
+                Los documentos se desbloquean en orden: primero Carta, luego
+                Remisión y por último Factura.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
